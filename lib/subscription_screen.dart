@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'home_page.dart';
+
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({super.key});
 
@@ -49,7 +51,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    // Scale functions based on design width 375 & height 812
     double w(double val) => val / 375 * screenWidth;
     double h(double val) => val / 812 * screenHeight;
 
@@ -63,8 +64,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color.fromRGBO(255, 244, 228, 1.0), // Soft peach
-              Color.fromRGBO(255, 255, 255, 0.0), // Transparent white
+              Color.fromRGBO(255, 244, 228, 1.0),
+              Color.fromRGBO(255, 255, 255, 0.0),
             ],
             stops: [0.0, 0.23],
           )
@@ -72,15 +73,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color.fromRGBO(255, 152, 210, 0.35), // Soft pink
-              Color.fromRGBO(255, 255, 255, 0.0),  // Transparent white
+              Color.fromRGBO(255, 152, 210, 0.35),
+              Color.fromRGBO(255, 255, 255, 0.0),
             ],
             stops: [0.0, 0.23],
           ),
         ),
         child: Stack(
           children: [
-            // Mixer Text + Close + Heart
             Positioned(
               top: MediaQuery.of(context).padding.top + h(20),
               left: w(20),
@@ -119,7 +119,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 ),
               ),
             ),
-            // Level Up Text
             Positioned(
               top: MediaQuery.of(context).padding.top + h(78),
               left: w(20),
@@ -136,7 +135,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 ),
               ),
             ),
-            // Select a plan
             Positioned(
               top: MediaQuery.of(context).padding.top + h(155),
               left: w(20),
@@ -153,31 +151,31 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 ),
               ),
             ),
-            // Mixer Card
+
             Positioned(
               top: MediaQuery.of(context).padding.top + h(204),
               left: w(14),
               child: _buildCard(0, w, h, "assets/mixer_heart.png"),
             ),
-            // Mixer VIP Card
+
             Positioned(
               top: MediaQuery.of(context).padding.top + h(204),
               left: w(198),
               child: _buildCard(1, w, h, "assets/mixer_vip_heart.png"),
             ),
-            // Included Features Box
+
             Positioned(
               top: MediaQuery.of(context).padding.top + h(381),
               left: w(14),
               child: _buildIncludedBox(w, h),
             ),
-            // Continue Button
+
             Positioned(
               bottom: MediaQuery.of(context).padding.bottom + h(55),
               left: (screenWidth - w(360)) / 2,
               child: _buildContinueButton(w, h),
             ),
-            // Disclaimer text
+
             Positioned(
               bottom: MediaQuery.of(context).padding.bottom + h(10),
               left: (screenWidth - w(329)) / 2,
@@ -209,12 +207,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       ) {
     bool isSelected = _selectedPlanIndex == index;
 
-    // Background color logic
     Color bgColor = isSelected
         ? (_plans[index]['selectedColor'] ?? _plans[index]['defaultColor'])
         : _plans[index]['defaultColor'];
 
-    // Border color logic
     Color borderColor = isSelected
         ? (_plans[index]['selectedBorderColor'] ?? _plans[index]['borderColor'])
         : _plans[index]['borderColor'];
@@ -237,7 +233,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Title + heart icon
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -293,10 +288,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        // Card container
         Container(
           width: w(350),
-          height: _selectedPlanIndex == 1 ? h(204) : h(170), // Expanded when selected
+          height: _selectedPlanIndex == 1 ? h(204) : h(170),
           decoration: BoxDecoration(
             border: Border.all(
               color: _selectedPlanIndex == 1
@@ -308,7 +302,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: h(24)), // Leave space for overlapping chip
+              SizedBox(height: h(24)),
               ...plan['features'].map<Widget>((f) {
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: w(20), vertical: h(6)),
@@ -340,18 +334,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             ],
           ),
         ),
-
-        // Overlapping chip
         Positioned(
-          top: -h(12), // Negative offset to overlap the top border
-          left: (w(350) - w(180)) / 2, // Center horizontally
+          top: -h(12),
+          left: (w(350) - w(180)) / 2,
           child: Container(
             width: w(180),
             padding: EdgeInsets.symmetric(horizontal: w(12), vertical: h(4)),
             decoration: BoxDecoration(
               color: _selectedPlanIndex == 1
-                  ? const Color(0xFFFCF5EC) // Light peach when VIP is selected
-                  : Colors.white,           // Default white otherwise
+                  ? const Color(0xFFFCF5EC)
+                  : Colors.white,
               borderRadius: BorderRadius.circular(39),
               border: Border.all(
                 color: _selectedPlanIndex == 1
@@ -377,51 +369,60 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   Widget _buildContinueButton(double Function(double) w, double Function(double) h) {
     final plan = _plans[_selectedPlanIndex];
-    return Container(
-      width: w(360),
-      height: h(48),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(39),
-        gradient: _selectedPlanIndex == 1
-            ? const LinearGradient(
-          colors: [
-            Color(0xFFD59331), // Start: warm amber
-            Color(0xFFA96F18), // End: deep bronze
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        )
-            : const LinearGradient(
-          colors: [
-            Color(0xFF880078), // Start: rich purple
-            Color(0xFFD5144E), // End: vibrant pink-red
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      },
+      child: Container(
+        width: w(360),
+        height: h(48),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(39),
+          gradient: _selectedPlanIndex == 1
+              ? const LinearGradient(
+            colors: [
+              Color(0xFFD59331),
+              Color(0xFFA96F18),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
+              : const LinearGradient(
+            colors: [
+              Color(0xFF880078),
+              Color(0xFFD5144E),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
         ),
-      ),
-      child: Center(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              'assets/button_heart.png',
-              width: 26,
-              height: 23,
-            ),
-            const SizedBox(width: 3.5), // spacing between image and text
-            Text(
-              'Continue – ${plan['price']} total',
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-                color: _selectedPlanIndex == 1 ? Colors.black : Colors.white,
+        child: Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                'assets/button_heart.png',
+                width: 26,
+                height: 23,
               ),
-            ),
-          ],
+              const SizedBox(width: 3.5),
+              Text(
+                'Continue – ${plan['price']} total',
+                style: TextStyle(
+                  fontFamily: 'Manrope',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: _selectedPlanIndex == 1 ? Colors.black : Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+
 }
